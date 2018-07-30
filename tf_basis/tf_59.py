@@ -1,2 +1,3 @@
 import tensorflow as tf
-filter()
+x = tf.constant([[0.7, 0.9]])
+1
