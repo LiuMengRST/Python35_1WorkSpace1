@@ -156,7 +156,9 @@ train_data, valid_data, test_data, _=raw_data
 
 config = SmallConfig()
 eval_config = SmallConfig()
+#每个batch中样本的数量
 eval_config.batch_size = 1
+#LSSTM梯度反向传播的展开步数
 eval_config.num_steps = 1
 with tf.Graph().as_default():
     initializer = tf.random_uniform_initializer(-config.init_scale, config.init_scale)
@@ -166,10 +168,10 @@ with tf.Graph().as_default():
         with tf.variable_scope("Model", reuse=None, initializer=initializer):
             m = PTBModel(is_training=True, config=config, input_=train_input)
 
-        with tf.name_scope("Valid"):
-            valid_input = PTBInput(config=config, data = valid_data, name="VvalidInput")
-            with tf.variable_scope("Model", reuse=True, initializer=initializer):
-                mvalid = PTBModel(is_training=False, config=config, input_=valid_input)
+    with tf.name_scope("Valid"):
+        valid_input = PTBInput(config=config, data = valid_data, name="VvalidInput")
+        with tf.variable_scope("Model", reuse=True, initializer=initializer):
+            mvalid = PTBModel(is_training=False, config=config, input_=valid_input)
 
     with tf.name_scope("Test"):
         test_input = PTBInput(config=eval_config, data=test_data, name="TestInput")
